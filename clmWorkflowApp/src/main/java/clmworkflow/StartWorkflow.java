@@ -80,13 +80,14 @@ public class StartWorkflow {
 			OAuthToken oAuthToken = apiClient.requestJWTUserToken(prop.getProperty("clientId"),
 					prop.getProperty("userId"), scopes, privateKeyBytes, 3600);
 			String accessToken = oAuthToken.getAccessToken();
+			
 			UserInfo userInfo = apiClient.getUserInfo(accessToken);
 			String accountId = userInfo.getAccounts().get(0).getAccountId();
 			System.out.println("userInfo: " + userInfo);
 
 			WorkflowDefinition wf = new WorkflowDefinition();
 			wf.setName(workflowName);
-			wf.setParams(params);
+			wf.setParams("\""+params+"\"");
 
 			apiClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
 			apiClient.setBasePath(ApiClient.CLM_UAT_REST_BASEPATH);
